@@ -7,6 +7,10 @@ import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
 import { getPostSlug } from "@/utils/getPostPaths";
 import config from "@/config";
 
+// The build's temporary font server listens on [::]; build hosts without IPv6 can't reach it over IPv6
+const fontUrl = (path: string, url: URL) =>
+  experimental_getFontFileURL(path, url).replace("http://[::]:", "http://127.0.0.1:");
+
 export async function getStaticPaths() {
   if (!config.features.dynamicOgImage) {
     return [];
@@ -36,10 +40,10 @@ export const GET: APIRoute = async ({ props, url }) => {
   }
 
   const [regularData, boldData] = await Promise.all([
-    fetch(experimental_getFontFileURL(regularFontPath, url)).then(res =>
+    fetch(fontUrl(regularFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
-    fetch(experimental_getFontFileURL(boldFontPath, url)).then(res =>
+    fetch(fontUrl(boldFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
   ]);
