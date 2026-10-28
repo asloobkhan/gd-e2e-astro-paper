@@ -5,6 +5,10 @@ import { fontData, experimental_getFontFileURL } from "astro:assets";
 import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
 import config from "@/config";
 
+// The build's temporary font server listens on [::]; build hosts without IPv6 can't reach it over IPv6
+const fontUrl = (path: string, url: URL) =>
+  experimental_getFontFileURL(path, url).replace("http://[::]:", "http://127.0.0.1:");
+
 export const GET: APIRoute = async context => {
   const fonts = fontData["--font-google-sans-code"];
   const regularFontPath = getFontPathByWeight(fonts, 400);
@@ -15,10 +19,10 @@ export const GET: APIRoute = async context => {
   }
 
   const [regularData, boldData] = await Promise.all([
-    fetch(experimental_getFontFileURL(regularFontPath, context.url)).then(res =>
+    fetch(fontUrl(regularFontPath, context.url)).then(res =>
       res.arrayBuffer()
     ),
-    fetch(experimental_getFontFileURL(boldFontPath, context.url)).then(res =>
+    fetch(fontUrl(boldFontPath, context.url)).then(res =>
       res.arrayBuffer()
     ),
   ]);
