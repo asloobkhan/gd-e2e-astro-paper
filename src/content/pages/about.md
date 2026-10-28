@@ -3,7 +3,7 @@ title: "About"
 description: "A bit about me and this blog."
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+E2E-MARKER-PAUSED-PUSH. AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
 ![Astro Paper](@/assets/images/astropaper-og.jpg)
 
